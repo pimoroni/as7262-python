@@ -28,12 +28,12 @@ python-sdist:
 	cd library; python setup.py sdist
 
 python-clean:
-	rm -r library/dist
-	rm -r library/build
-	rm -r library/*.egg-info
+	-rm -r library/dist
+	-rm -r library/build
+	-rm -r library/*.egg-info
 
 python-dist: python-clean python-readme python-wheels python-sdist
 	ls library/dist
 
 python-deploy: python-dist
-	twine upload libary/dist/*
+	twine upload library/dist/*
