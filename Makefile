@@ -17,14 +17,19 @@ uninstall:
 
 python-readme: library/README.rst
 
+python-license: library/LICENSE.txt
+
 library/README.rst: README.md
 	pandoc --from=markdown --to=rst -o library/README.rst README.md
 
-python-wheels:
+library/LICENSE.txt: LICENSE
+	cp LICENSE library/LICENSE.txt
+
+python-wheels: python-readme python-license
 	cd library; python3 setup.py bdist_wheel
 	cd library; python setup.py bdist_wheel
 
-python-sdist:
+python-sdist: python-readme python-license
 	cd library; python setup.py sdist
 
 python-clean:
@@ -32,7 +37,7 @@ python-clean:
 	-rm -r library/build
 	-rm -r library/*.egg-info
 
-python-dist: python-clean python-readme python-wheels python-sdist
+python-dist: python-clean python-wheels python-sdist
 	ls library/dist
 
 python-deploy: python-dist
