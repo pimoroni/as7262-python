@@ -3,15 +3,17 @@ import struct
 
 import smbus
 from i2cdevice import Device, Register, BitField, _int_to_bytes
-from i2cdevice.adapter import Adapter, LookupAdapter, U16ByteSwapAdapter
+from i2cdevice.adapter import Adapter, LookupAdapter
+
 
 class as7262VirtualRegisterBus():
     """AS7262 Virtual Register
-    
+
     This class implements the wacky virtual register setup
     of the AS7262 annd allows i2cdevice.Device to "just work"
     without having to worry about how registers are actually
     read or written under the hood.
+
     """
     def __init__(self, bus):
         self._i2c_bus = smbus.SMBus(1)
@@ -61,6 +63,7 @@ class FloatAdapter(Adapter):
 class IntegrationTimeAdapter(Adapter):
     def _decode(self, value):
         return value / 2.8
+
     def _encode(self, value):
         return int(value * 2.8)
 
@@ -92,7 +95,7 @@ _as7262 = Device(0x49, i2c_dev=as7262VirtualRegisterBus(1), bit_width=8, registe
         })),
         BitField('illumination_enable', 0b00001000),
         BitField('indicator_current_limit_ma', 0b00000110, adapter=LookupAdapter({
-            1: 0b00, 2: 0b01, 4: 0b10, 8: 0b11    
+            1: 0b00, 2: 0b01, 4: 0b10, 8: 0b11
         })),
         BitField('indicator_enable', 0b00000001),
     )),
@@ -130,6 +133,7 @@ for register in _as7262.registers:
                         ).upper()
                 locals()[name] = key
 
+
 def soft_reset():
     _as7262.CONTROL.set_reset(1)
     # Polling for the state of the reset flag does not work here
@@ -137,6 +141,7 @@ def soft_reset():
     # respond while in a soft reset condition
     # So, just wait long enough for it to reset fully...
     time.sleep(1.0)
+
 
 class CalibratedValues:
     def __init__(self, red, orange, yellow, green, blue, violet):
@@ -151,38 +156,47 @@ class CalibratedValues:
         for colour in ['red', 'orange', 'yellow', 'green', 'blue', 'violet']:
             yield getattr(self, colour)
 
+
 def get_calibrated_values(timeout=10):
     t_start = time.time()
     while _as7262.CONTROL.get_data_ready() == 0 and (time.time() - t_start) <= timeout:
         pass
     with _as7262.CALIBRATED_DATA as DATA:
-        return CalibratedValues(DATA.get_r(),\
-               DATA.get_o(),\
-               DATA.get_y(),\
-               DATA.get_g(),\
-               DATA.get_b(),\
-               DATA.get_v())
+        return CalibratedValues(DATA.get_r(),
+                                DATA.get_o(),
+                                DATA.get_y(),
+                                DATA.get_g(),
+                                DATA.get_b(),
+                                DATA.get_v())
+
 
 def set_gain(gain):
     _as7262.CONTROL.set_gain_x(gain)
 
+
 def set_measurement_mode(mode):
     _as7262.CONTROL.set_measurement_mode(mode)
+
 
 def set_integration_time(time_ms):
     _as7262.INTEGRATION_TIME.set_ms(time_ms)
 
+
 def set_illumination_led_current(current):
     _as7262.LED_CONTROL.set_illumination_current_limit_ma(current)
+
 
 def set_indicator_led_current(current):
     _as7262.LED_CONTROL.set_indicator_current_limit_ma(current)
 
+
 def set_illumination_led(state):
     _as7262.LED_CONTROL.set_illumination_enable(state)
 
+
 def set_indicator_led(state):
     _as7262.LED_CONTROL.set_indicator_enable(state)
+
 
 def get_version():
     with _as7262.VERSION as VERSION:
@@ -191,6 +205,7 @@ def get_version():
         hw_type = VERSION.get_hw_type()
 
     return hw_type, hw_version, fw_version
+
 
 if __name__ == "__main__":
     soft_reset()
@@ -205,10 +220,10 @@ if __name__ == "__main__":
 
     set_measurement_mode(2)
 
-    #set_illumination_led_current(12.5)
+    # set_illumination_led_current(12.5)
     set_illumination_led(1)
-    #set_indicator_led_current(2)
-    #set_indicator_led(1)
+    # set_indicator_led_current(2)
+    # set_indicator_led(1)
 
     try:
         while True:

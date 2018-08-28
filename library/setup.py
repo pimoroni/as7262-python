@@ -38,16 +38,16 @@ classifiers = ['Development Status :: 4 - Beta',
                'Topic :: System :: Hardware']
 
 setup(
-    name            = 'as7262',
-    version         = '0.0.1',
-    author          = 'Philip Howard',
-    author_email    = 'phil@pimoroni.com',
-    description     = """Python library for the spectral sensor""",
-    long_description= open('README.rst').read() + open('CHANGELOG.txt').read(),
-    license         = 'MIT',
-    keywords        = 'Raspberry Pi',
-    url             = 'http://www.pimoroni.com',
-    classifiers     = classifiers,
-    packages        = ['as7262'],
-    install_requires= [ 'i2cdevice' ]
+    name='as7262',
+    version='0.0.1',
+    author='Philip Howard',
+    author_email='phil@pimoroni.com',
+    description="""Python library for the spectral sensor""",
+    long_description=open('README.rst').read() + open('CHANGELOG.txt').read(),
+    license='MIT',
+    keywords='Raspberry Pi',
+    url='http://www.pimoroni.com',
+    classifiers=classifiers,
+    packages=['as7262'],
+    install_requires=['i2cdevice']
 )
