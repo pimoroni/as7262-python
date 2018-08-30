@@ -1,4 +1,7 @@
+import struct
 from i2cdevice import MockSMBus
+
+CALIBRATED_VALUES = [1.1, 2.2, 3.3, 4.4, 5.5, 6.6]
 
 REG_STATUS = 0x00
 REG_WRITE = 0x01
@@ -44,6 +47,13 @@ class SMBusFakeAS7262(MockSMBus):
         self.regs[0x01] = 0x77  # Fake HW version
         self.regs[0x02] = 0xFE  # Fake FW version MSB (Sub, Minor)
         self.regs[0x03] = 0xFF  # Fake FW version LSB (Minor, Major)
+        self.regs[0x04] = 0x02  # Control Register
+
+        # Prime the Calibrated Data registers with fake data
+        self.regs[0x14:24] = [ord(c) for c in struct.pack(
+            ">ffffff",
+            *reversed(CALIBRATED_VALUES)
+        )]
 
         # Major = 0b1111 = 15
         # Minor = 0b111111 = 63
