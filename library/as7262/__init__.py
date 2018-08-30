@@ -108,12 +108,12 @@ _as7262 = Device(0x49, i2c_dev=as7262VirtualRegisterBus(1), bit_width=8, registe
         BitField('r', 0x00000000000000000000FFFF),
     ), bit_width=96),
     Register('CALIBRATED_DATA', 0x14, fields=(
-        BitField('v', 0xFFFFFFFF << (32*5), adapter=FloatAdapter()),
-        BitField('b', 0xFFFFFFFF << (32*4), adapter=FloatAdapter()),
-        BitField('g', 0xFFFFFFFF << (32*3), adapter=FloatAdapter()),
-        BitField('y', 0xFFFFFFFF << (32*2), adapter=FloatAdapter()),
-        BitField('o', 0xFFFFFFFF << (32*1), adapter=FloatAdapter()),
-        BitField('r', 0xFFFFFFFF << (32*0), adapter=FloatAdapter()),
+        BitField('v', 0xFFFFFFFF << (32 * 5), adapter=FloatAdapter()),
+        BitField('b', 0xFFFFFFFF << (32 * 4), adapter=FloatAdapter()),
+        BitField('g', 0xFFFFFFFF << (32 * 3), adapter=FloatAdapter()),
+        BitField('y', 0xFFFFFFFF << (32 * 2), adapter=FloatAdapter()),
+        BitField('o', 0xFFFFFFFF << (32 * 1), adapter=FloatAdapter()),
+        BitField('r', 0xFFFFFFFF << (32 * 0), adapter=FloatAdapter()),
     ), bit_width=192),
 ))
 
@@ -127,10 +127,10 @@ for register in _as7262.registers:
             for key in field.adapter.lookup_table:
                 value = field.adapter.lookup_table[key]
                 name = "AS7262_{register}_{field}_{key}".format(
-                            register=register.name,
-                            field=field.name,
-                            key=key
-                        ).upper()
+                    register=register.name,
+                    field=field.name,
+                    key=key
+                ).upper()
                 locals()[name] = key
 
 
