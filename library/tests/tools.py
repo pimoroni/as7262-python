@@ -57,7 +57,7 @@ class SMBusFakeAS7262(MockSMBus):
 
         # Prime the Calibrated Data registers with fake data
         self.regs[0x14:24] = [ord(c) if type(c) is str else c for c in struct.pack(
-            ">ffffff",
+            '>ffffff',
             *reversed(CALIBRATED_VALUES)
         )]
 

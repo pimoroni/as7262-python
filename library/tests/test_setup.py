@@ -15,4 +15,4 @@ def test_fw_info():
 
     assert hw_version == 0x77
     assert hw_type == 0x88
-    assert fw_version == "15.63.62"
+    assert fw_version == '15.63.62'

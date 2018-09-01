@@ -71,7 +71,7 @@ class FloatAdapter(Adapter):
 
     def _decode(self, value):
         b = _int_to_bytes(value, 4)
-        return struct.unpack(">f", bytearray(b))[0]
+        return struct.unpack('>f', bytearray(b))[0]
 
 
 class IntegrationTimeAdapter(Adapter):
@@ -142,7 +142,7 @@ for register in _as7262.registers:
         if isinstance(field.adapter, LookupAdapter):
             for key in field.adapter.lookup_table:
                 value = field.adapter.lookup_table[key]
-                name = "AS7262_{register}_{field}_{key}".format(
+                name = 'AS7262_{register}_{field}_{key}'.format(
                     register=register.name,
                     field=field.name,
                     key=key
@@ -263,12 +263,12 @@ def get_version():
     return hw_type, hw_version, fw_version
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     soft_reset()
 
     hw_type, hw_version, fw_version = get_version()
 
-    print("{}".format(fw_version))
+    print('{}'.format(fw_version))
 
     set_gain(64)
 
