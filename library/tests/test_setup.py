@@ -1,9 +1,11 @@
+# noqa D100
 import sys
 import mock
 from tools import SMBusFakeAS7262
 
 
 def test_fw_info():
+    """Test against fake device information stored in hardware mock."""
     smbus = mock.Mock()
     smbus.SMBus = SMBusFakeAS7262
     sys.modules['smbus'] = smbus

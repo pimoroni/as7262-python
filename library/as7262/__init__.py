@@ -1,3 +1,4 @@
+"""Library for the AS7262 Visble Light Spectral Sensor."""
 import time
 import struct
 
@@ -7,7 +8,7 @@ from i2cdevice.adapter import Adapter, LookupAdapter
 
 
 class as7262VirtualRegisterBus():
-    """AS7262 Virtual Register
+    """AS7262 Virtual Register.
 
     This class implements the wacky virtual register setup
     of the AS7262 annd allows i2cdevice.Device to "just work"
@@ -15,13 +16,21 @@ class as7262VirtualRegisterBus():
     read or written under the hood.
 
     """
-    def __init__(self, bus):
-        self._i2c_bus = smbus.SMBus(1)
+
+    def __init__(self, bus=1):
+        """Initialise virtual register class.
+
+        :param bus: SMBus bus ID
+
+        """
+        self._i2c_bus = smbus.SMBus(bus)
 
     def get_status(self, address):
+        """Return the AS7262 status register."""
         return self._i2c_bus.read_byte_data(address, 0x00)
 
     def write_i2c_block_data(self, address, register, values):
+        """Right one or more values to AS7262 virtual registers."""
         for offset in range(len(values)):
             while True:
                 if (self.get_status(address) & 0b10) == 0:
@@ -33,6 +42,7 @@ class as7262VirtualRegisterBus():
             self._i2c_bus.write_byte_data(address, 0x01, values[offset])
 
     def read_i2c_block_data(self, address, register, length):
+        """Read one or more values from AS7262 virtual registers."""
         result = []
         for offset in range(length):
             while True:
@@ -47,6 +57,8 @@ class as7262VirtualRegisterBus():
 
 
 class FWVersionAdapter(Adapter):
+    """Convert the AS7262 firmware version number to a human-readable string."""
+
     def _decode(self, value):
         major_version = (value & 0x00F0) >> 4
         minor_version = ((value & 0x000F) << 2) | ((value & 0b1100000000000000) >> 14)
@@ -55,12 +67,16 @@ class FWVersionAdapter(Adapter):
 
 
 class FloatAdapter(Adapter):
+    """Convert a 4 byte register set into a float."""
+
     def _decode(self, value):
         b = _int_to_bytes(value, 4)
         return struct.unpack(">f", bytearray(b))[0]
 
 
 class IntegrationTimeAdapter(Adapter):
+    """Scale integration time in ms to LSBs."""
+
     def _decode(self, value):
         return value / 2.8
 
@@ -135,6 +151,7 @@ for register in _as7262.registers:
 
 
 def soft_reset():
+    """Set the soft reset register bit of the AS7262."""
     _as7262.CONTROL.set_reset(1)
     # Polling for the state of the reset flag does not work here
     # since the fragile virtual register state machine cannot
@@ -144,7 +161,9 @@ def soft_reset():
 
 
 class CalibratedValues:
-    def __init__(self, red, orange, yellow, green, blue, violet):
+    """Store the 6 band spectral values."""
+
+    def __init__(self, red, orange, yellow, green, blue, violet):  # noqa D107
         self.red = red
         self.orange = orange
         self.yellow = yellow
@@ -152,12 +171,13 @@ class CalibratedValues:
         self.blue = blue
         self.violet = violet
 
-    def __iter__(self):
+    def __iter__(self):  # noqa D107
         for colour in ['red', 'orange', 'yellow', 'green', 'blue', 'violet']:
             yield getattr(self, colour)
 
 
 def get_calibrated_values(timeout=10):
+    """Return an instance of CalibratedValues containing the 6 spectral bands."""
     t_start = time.time()
     while _as7262.CONTROL.get_data_ready() == 0 and (time.time() - t_start) <= timeout:
         pass
@@ -171,34 +191,70 @@ def get_calibrated_values(timeout=10):
 
 
 def set_gain(gain):
+    """Set the gain amount of the AS7262.
+
+    :param gain: gain multiplier, one of 1, 3.7, 16 or 64
+
+    """
     _as7262.CONTROL.set_gain_x(gain)
 
 
 def set_measurement_mode(mode):
+    """Set the AS7262 measurement mode.
+
+    :param mode: 0-3
+
+    """
     _as7262.CONTROL.set_measurement_mode(mode)
 
 
 def set_integration_time(time_ms):
+    """Set the AS7262 sensor integration time in milliseconds.
+
+    :param time_ms: Time in milliseconds from 0 to ~91
+
+    """
     _as7262.INTEGRATION_TIME.set_ms(time_ms)
 
 
 def set_illumination_led_current(current):
+    """Set the AS7262 illumination LED current in milliamps.
+
+    :param current: Value in milliamps, one of 12.5, 25, 50 or 100
+
+    """
     _as7262.LED_CONTROL.set_illumination_current_limit_ma(current)
 
 
 def set_indicator_led_current(current):
+    """Set the AS7262 indicator LED current in milliamps.
+
+    :param current: Value in milliamps, one of 1, 2, 4 or 8
+
+    """
     _as7262.LED_CONTROL.set_indicator_current_limit_ma(current)
 
 
 def set_illumination_led(state):
+    """Set the AS7262 illumination LED state.
+
+    :param state: True = On, False = Off
+
+    """
     _as7262.LED_CONTROL.set_illumination_enable(state)
 
 
 def set_indicator_led(state):
+    """Set the AS7262 indicator LED state.
+
+    :param state: True = On, False = Off
+
+    """
     _as7262.LED_CONTROL.set_indicator_enable(state)
 
 
 def get_version():
+    """Get the hardware type, version and firmware version from the AS7262."""
     with _as7262.VERSION as VERSION:
         fw_version = VERSION.get_fw_version()
         hw_version = VERSION.get_hw_version()

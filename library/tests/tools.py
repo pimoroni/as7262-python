@@ -1,3 +1,4 @@
+"""Test tools for the AS7262 sensor."""
 import struct
 from i2cdevice import MockSMBus
 
@@ -38,6 +39,11 @@ class SMBusFakeAS7262(MockSMBus):
     """
 
     def __init__(self, i2c_bus):
+        """Initialise the class.
+
+        :param i2c_bus: i2c bus ID.
+
+        """
         MockSMBus.__init__(self, i2c_bus)
         self.status = 0b01    # Fake status register
         self.ptr = None       # Fake register pointer
@@ -60,6 +66,7 @@ class SMBusFakeAS7262(MockSMBus):
         # Sub = 0b111110 = 62
 
     def write_byte_data(self, i2c_address, register, value):
+        """Write a single  byte."""
         if self.ptr is None and register == REG_WRITE:
             self.ptr = value & 0b1111111  # Mask out write bit
 
@@ -68,6 +75,7 @@ class SMBusFakeAS7262(MockSMBus):
             self.ptr = None
 
     def read_byte_data(self, i2c_address, register):
+        """Read a single byte."""
         if register == REG_STATUS:
             return self.status
 

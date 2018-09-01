@@ -1,3 +1,4 @@
+# noqa D100
 import sys
 import mock
 from tools import SMBusFakeAS7262, CALIBRATED_VALUES
@@ -12,6 +13,7 @@ def _setup():
 
 
 def test_set_integration_time():
+    """Test the set_integration_time method against various values."""
     _setup()
 
     # Integration time is stored as 2.8ms per lsb
@@ -35,6 +37,7 @@ def test_set_integration_time():
 
 
 def test_set_gain():
+    """Test the set_gain method against various values."""
     _setup()
 
     as7262.set_gain(1)
@@ -50,6 +53,7 @@ def test_set_gain():
 
 
 def test_set_measurement_mode():
+    """Test the set_measurement_mode method."""
     _setup()
 
     as7262.set_measurement_mode(2)
@@ -57,6 +61,7 @@ def test_set_measurement_mode():
 
 
 def test_set_illumination_led_current():
+    """Test the set_illumination_led_current method."""
     _setup()
 
     as7262.set_illumination_led_current(12.5)
@@ -70,6 +75,7 @@ def test_set_illumination_led_current():
 
 
 def test_set_indicator_led_current():
+    """Test the set_indicator_led_current method."""
     _setup()
 
     as7262.set_indicator_led_current(4)
@@ -83,6 +89,7 @@ def test_set_indicator_led_current():
 
 
 def test_indicator_led():
+    """Test the indicator_led method."""
     _setup()
 
     as7262.set_indicator_led(1)
@@ -90,6 +97,7 @@ def test_indicator_led():
 
 
 def test_illumination_led():
+    """Test the illumination_led method."""
     _setup()
 
     as7262.set_illumination_led(1)
@@ -97,6 +105,7 @@ def test_illumination_led():
 
 
 def test_soft_reset():
+    """Test the soft_reset method."""
     _setup()
 
     as7262.soft_reset()
@@ -104,6 +113,7 @@ def test_soft_reset():
 
 
 def test_get_calibrated_values():
+    """Test against fake calibrated values stored in hardware mock."""
     _setup()
 
     values = as7262.get_calibrated_values()
