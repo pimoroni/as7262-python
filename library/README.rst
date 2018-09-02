@@ -26,6 +26,6 @@ Latest/development library from GitHub:
 .. |Coverage Status| image:: https://coveralls.io/repos/github/pimoroni/as7262-python/badge.svg?branch=master
    :target: https://coveralls.io/github/pimoroni/as7262-python?branch=master
 .. |PyPi Package| image:: https://img.shields.io/pypi/v/as7262.svg
-   :target: https://pypi.python.org/pypi/as7262-python
+   :target: https://pypi.python.org/pypi/as7262
 .. |Python Versions| image:: https://img.shields.io/pypi/pyversions/as7262.svg
-   :target: https://pypi.python.org/pypi/as7262-python
+   :target: https://pypi.python.org/pypi/as7262
