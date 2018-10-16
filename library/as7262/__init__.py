@@ -261,36 +261,3 @@ def get_version():
         hw_type = VERSION.get_hw_type()
 
     return hw_type, hw_version, fw_version
-
-
-if __name__ == '__main__':
-    soft_reset()
-
-    hw_type, hw_version, fw_version = get_version()
-
-    print('{}'.format(fw_version))
-
-    set_gain(64)
-
-    set_integration_time(17.857)
-
-    set_measurement_mode(2)
-
-    # set_illumination_led_current(12.5)
-    set_illumination_led(1)
-    # set_indicator_led_current(2)
-    # set_indicator_led(1)
-
-    try:
-        while True:
-            values = get_calibrated_values()
-            print("""
-Red:    {}
-Orange: {}
-Yellow: {}
-Green:  {}
-Blue:   {}
-Violet: {}""".format(*values))
-    except KeyboardInterrupt:
-        set_measurement_mode(3)
-        set_illumination_led(0)
