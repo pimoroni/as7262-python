@@ -157,7 +157,7 @@ def soft_reset():
     # since the fragile virtual register state machine cannot
     # respond while in a soft reset condition
     # So, just wait long enough for it to reset fully...
-    time.sleep(1.0)
+    time.sleep(2.0)
 
 
 class CalibratedValues:
