@@ -39,11 +39,11 @@ classifiers = ['Development Status :: 4 - Beta',
 
 setup(
     name='as7262',
-    version='0.0.1',
+    version='0.0.2',
     author='Philip Howard',
     author_email='phil@pimoroni.com',
     description="""Python library for the spectral sensor""",
-    long_description=open('README.rst').read() + open('CHANGELOG.txt').read(),
+    long_description=open('README.rst').read() + '\n' + open('CHANGELOG.txt').read(),
     license='MIT',
     keywords='Raspberry Pi',
     url='http://www.pimoroni.com',
