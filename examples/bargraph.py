@@ -21,8 +21,20 @@ as7262.set_measurement_mode(2)
 as7262.set_illumination_led(1)
 
 try:
+    input = raw_input
+except NameError:
+    pass
+
+input("Setting white point baseline.\n\nHold a white sheet of paper ~5cm in front of the sensor and press a key...\n")
+baseline = as7262.get_calibrated_values()
+time.sleep(1)
+input("Baseline set. Press a key to continue...\n")
+sys.stdout.flush()
+
+try:
     while True:
         values = as7262.get_calibrated_values()
+        values = [int(x/y*MAX_VALUE) for x,y in zip(list(values), list(baseline))]
         values = [int(min(value, MAX_VALUE) / MAX_VALUE * BAR_WIDTH) for value in values]
         red, orange, yellow, green, blue, violet = [(BAR_CHAR * value) + (' ' * (BAR_WIDTH - value)) for value in values]
 
