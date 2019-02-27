@@ -2,3 +2,4 @@
 source = as7262
 omit =
     .tox/*
+    as7262/__main__.py
