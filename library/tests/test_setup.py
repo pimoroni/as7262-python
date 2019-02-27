@@ -1,7 +1,7 @@
 # noqa D100
 import sys
-import mock
-from tools import SMBusFakeAS7262
+import mock  # noqa: E402
+from .tools import SMBusFakeAS7262  # noqa: E402
 
 
 def test_fw_info():
