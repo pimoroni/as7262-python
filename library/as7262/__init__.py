@@ -6,6 +6,8 @@ import smbus
 from i2cdevice import Device, Register, BitField, _int_to_bytes
 from i2cdevice.adapter import Adapter, LookupAdapter
 
+__version__ = '0.0.2'
+
 
 class as7262VirtualRegisterBus():
     """AS7262 Virtual Register.
