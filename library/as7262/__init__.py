@@ -83,7 +83,7 @@ class IntegrationTimeAdapter(Adapter):
         return value / 2.8
 
     def _encode(self, value):
-        return int(value * 2.8)
+        return int(value * 2.8) & 0xff
 
 
 _as7262 = Device(0x49, i2c_dev=as7262VirtualRegisterBus(1), bit_width=8, registers=(
