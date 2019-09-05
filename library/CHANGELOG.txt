@@ -1,3 +1,9 @@
+0.1.0
+-----
+
+* Port to new i2cdevice API
+* Breaking change from singleton module to AS7262 class
+
 0.0.2
 -----
 

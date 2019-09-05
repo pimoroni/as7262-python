@@ -39,7 +39,7 @@ classifiers = ['Development Status :: 4 - Beta',
 
 setup(
     name='as7262',
-    version='0.0.2',
+    version='0.1.0',
     author='Philip Howard',
     author_email='phil@pimoroni.com',
     description="""Python library for the spectral sensor""",
