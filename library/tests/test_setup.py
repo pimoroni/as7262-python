@@ -9,7 +9,9 @@ def test_fw_info():
     smbus = mock.Mock()
     smbus.SMBus = SMBusFakeAS7262
     sys.modules['smbus'] = smbus
-    import as7262
+    from as7262 import AS7262
+
+    as7262 = AS7262()
 
     hw_type, hw_version, fw_version = as7262.get_version()
 

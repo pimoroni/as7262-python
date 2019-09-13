@@ -1,6 +1,7 @@
-import as7262
+from as7262 import AS7262
 
-as7262.soft_reset()
+as7262 = AS7262()
+
 as7262.set_gain(64)
 as7262.set_integration_time(17.857)
 as7262.set_measurement_mode(2)

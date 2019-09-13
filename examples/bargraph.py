@@ -1,7 +1,9 @@
 import time
 import os
 import sys
-import as7262
+from as7262 import AS7262
+
+as7262 = AS7262()
 
 BAR_CHAR = u'\u2588'
 
@@ -14,7 +16,6 @@ ANSI_COLOR_MAGENTA = '\x1b[35m'
 MAX_VALUE = 14000.0
 BAR_WIDTH = 25
 
-as7262.soft_reset()
 as7262.set_gain(64)
 as7262.set_integration_time(17.857)
 as7262.set_measurement_mode(2)

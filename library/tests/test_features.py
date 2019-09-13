@@ -9,7 +9,8 @@ def _setup():
     smbus = mock.Mock()
     smbus.SMBus = SMBusFakeAS7262
     sys.modules['smbus'] = smbus
-    import as7262
+    from as7262 import AS7262
+    as7262 = AS7262()
 
 
 def test_set_integration_time():
