@@ -11,11 +11,11 @@ Suitable for detecting the properties of ambient light, light passing through a 
 
 Stable library from PyPi:
 
-* Just run `sudo pip install as7262`
+* Just run `python3 -m pip install as7262`
 
 Latest/development library from GitHub:
 
 * `git clone https://github.com/pimoroni/as7262-python`
 * `cd as7262-python`
-* `sudo ./install.sh`
+* `sudo ./install.sh --unstable`
 
