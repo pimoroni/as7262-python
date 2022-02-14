@@ -1,4 +1,5 @@
 #!/bin/bash
+
 CONFIG=/boot/config.txt
 DATESTAMP=`date "+%Y-%m-%d-%H-%M-%S"`
 CONFIG_BACKUP=false
@@ -10,8 +11,12 @@ USAGE="sudo ./install.sh (--unstable)"
 POSITIONAL_ARGS=()
 FORCE=false
 UNSTABLE=false
-PYTHON="/usr/bin/python3"
+CODENAME=`lsb_release -sc`
 
+if [[ $CODENAME == "bullseye" ]]; then
+	bash ./install.sh $@
+	exit $?
+fi
 
 user_check() {
 	if [ $(id -u) -ne 0 ]; then
@@ -105,11 +110,6 @@ while [[ $# -gt 0 ]]; do
 		FORCE=true
 		shift
 		;;
-	-p|--python)
-		PYTHON=$2
-		shift
-		shift
-		;;
 	*)
 		if [[ $1 == -* ]]; then
 			printf "Unrecognised option: $1\n";
@@ -123,18 +123,9 @@ done
 
 user_check
 
-if [ ! -f "$PYTHON" ]; then
-	printf "Python path $PYTHON not found!\n"
-	exit 1
-fi
+apt_pkg_install python-configparser
 
-PYTHON_VER=`$PYTHON --version`
-
-inform "Installing. Please wait..."
-
-$PYTHON -m pip install --upgrade configparser
-
-CONFIG_VARS=`$PYTHON - <<EOF
+CONFIG_VARS=`python - <<EOF
 from configparser import ConfigParser
 c = ConfigParser()
 c.read('library/setup.cfg')
@@ -187,16 +178,30 @@ fi
 
 cd library
 
-printf "Installing for $PYTHON_VER...\n"
-apt_pkg_install "${PY3_DEPS[@]}"
+printf "Installing for Python 2..\n"
+apt_pkg_install "${PY2_DEPS[@]}"
 if $UNSTABLE; then
-	$PYTHON setup.py install > /dev/null
+	python setup.py install > /dev/null
 else
-	$PYTHON -m pip install --upgrade $LIBRARY_NAME
+	pip install --upgrade $LIBRARY_NAME
 fi
 if [ $? -eq 0 ]; then
 	success "Done!\n"
-	echo "$PYTHON -m pip uninstall $LIBRARY_NAME" >> $UNINSTALLER
+	echo "pip uninstall $LIBRARY_NAME" >> $UNINSTALLER
+fi
+
+if [ -f "/usr/bin/python3" ]; then
+	printf "Installing for Python 3..\n"
+	apt_pkg_install "${PY3_DEPS[@]}"
+	if $UNSTABLE; then
+		python3 setup.py install > /dev/null
+	else
+		pip3 install --upgrade $LIBRARY_NAME
+	fi
+	if [ $? -eq 0 ]; then
+		success "Done!\n"
+		echo "pip3 uninstall $LIBRARY_NAME" >> $UNINSTALLER
+	fi
 fi
 
 cd $WD
