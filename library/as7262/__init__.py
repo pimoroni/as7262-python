@@ -30,18 +30,28 @@ class as7262VirtualRegisterBus():
         else:
             self._i2c_bus = i2c_dev
 
+        self._timeout = 2.0
+
     def get_status(self, address):
         """Return the AS7262 status register."""
         return self._i2c_bus.read_byte_data(address, 0x00)
 
+    def as7262_timeout(self):
+        t_start = time.time()
+        while time.time() - t_start < self._timeout:
+            yield True
+        raise IOError("Timeout waiting for virtual register IO.")
+
     def write_i2c_block_data(self, address, register, values):
         """Right one or more values to AS7262 virtual registers."""
         for offset in range(len(values)):
-            while True:
+            t = self.as7262_timeout()
+            while next(t):
                 if (self.get_status(address) & 0b10) == 0:
                     break
             self._i2c_bus.write_byte_data(address, 0x01, register | 0x80)
-            while True:
+            t = self.as7262_timeout()
+            while next(t):
                 if (self.get_status(address) & 0b10) == 0:
                     break
             self._i2c_bus.write_byte_data(address, 0x01, values[offset])
@@ -50,11 +60,13 @@ class as7262VirtualRegisterBus():
         """Read one or more values from AS7262 virtual registers."""
         result = []
         for offset in range(length):
-            while True:
+            t = self.as7262_timeout()
+            while next(t):
                 if (self.get_status(address) & 0b10) == 0:
                     break
             self._i2c_bus.write_byte_data(address, 0x01, register + offset)
-            while True:
+            t = self.as7262_timeout()
+            while next(t):
                 if (self.get_status(address) & 0b01) == 1:
                     break
             result.append(self._i2c_bus.read_byte_data(address, 0x02))
