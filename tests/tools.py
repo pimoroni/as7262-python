@@ -49,7 +49,7 @@ class SMBusFakeAS7262(MockSMBus):
         self.status = 0b01    # Fake status register
         self.ptr = None       # Fake register pointer
 
-        # Virtual registers, thes contain the data actually used
+        # Virtual registers, these contain the data actually used
         self.regs[0x00] = 0x88  # Fake HW type
         self.regs[0x01] = 0x77  # Fake HW version
         self.regs[0x02] = 0xFE  # Fake FW version MSB (Sub, Minor)

@@ -1,4 +1,4 @@
-"""Library for the AS7262 Visble Light Spectral Sensor."""
+"""Library for the AS7262 Visible Light Spectral Sensor."""
 import struct
 import time
 
@@ -12,7 +12,7 @@ class as7262VirtualRegisterBus():
     """AS7262 Virtual Register.
 
     This class implements the wacky virtual register setup
-    of the AS7262 annd allows i2cdevice.Device to "just work"
+    of the AS7262 and allows i2cdevice.Device to "just work"
     without having to worry about how registers are actually
     read or written under the hood.
 
