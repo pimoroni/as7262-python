@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 
@@ -34,22 +35,23 @@ sys.stdout.flush()
 
 try:
     while True:
+        tcols, _ = os.get_terminal_size()
         values = as7262.get_calibrated_values()
         values = [int(x/y*MAX_VALUE) for x,y in zip(list(values), list(baseline))]
         values = [int(min(value, MAX_VALUE) / MAX_VALUE * BAR_WIDTH) for value in values]
         red, orange, yellow, green, blue, violet = [(BAR_CHAR * value) + (' ' * (BAR_WIDTH - value)) for value in values]
 
         sys.stdout.write('\x1b[0;1H')
-        sys.stdout.write(u"""       Spectrometer Bar Graph        
- ---------------------------------     
-|Red:    {}{}\x1b[0m|     
-|Orange: {}{}\x1b[0m|     
-|Yellow: {}{}\x1b[0m|     
-|Green:  {}{}\x1b[0m|     
-|Blue:   {}{}\x1b[0m|     
-|Violet: {}{}\x1b[0m|     
- ---------------------------------     
-                                 
+        bargraph =u"""       Spectrometer Bar Graph
+ ---------------------------------
+|Red:    {}{}\x1b[0m|
+|Orange: {}{}\x1b[0m|
+|Yellow: {}{}\x1b[0m|
+|Green:  {}{}\x1b[0m|
+|Blue:   {}{}\x1b[0m|
+|Violet: {}{}\x1b[0m|
+ ---------------------------------
+
 """.format(
     ANSI_COLOR_RED, red,
     ANSI_COLOR_YELLOW, orange,
@@ -57,7 +59,10 @@ try:
     ANSI_COLOR_GREEN, green,
     ANSI_COLOR_BLUE, blue,
     ANSI_COLOR_MAGENTA, violet
-))
+)
+
+        bargraph = "\n".join(line.ljust(tcols, " ") for line in bargraph.split("\n"))
+        sys.stdout.write(bargraph)
         sys.stdout.flush()
         time.sleep(0.5)
 
