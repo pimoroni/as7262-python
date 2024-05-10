@@ -5,7 +5,6 @@ _build/
 *.a
 *.py[cod]
 *.egg-info
-*.swp
 dist/
 __pycache__
 .DS_Store
@@ -19,4 +18,3 @@ library/debian/
 .coverage
 .pytest_cache
 .tox
-.vscode
