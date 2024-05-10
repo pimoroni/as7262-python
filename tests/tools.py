@@ -1,5 +1,6 @@
 """Test tools for the AS7262 sensor."""
 import struct
+
 from i2cdevice import MockSMBus
 
 CALIBRATED_VALUES = [1.1, 2.2, 3.3, 4.4, 5.5, 6.6]

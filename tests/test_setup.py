@@ -1,6 +1,8 @@
 # noqa D100
 import sys
+
 import mock  # noqa: E402
+
 from .tools import SMBusFakeAS7262  # noqa: E402
 
 

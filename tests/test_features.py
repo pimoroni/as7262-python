@@ -1,7 +1,9 @@
 # noqa D100
 import sys
+
 import mock
-from .tools import SMBusFakeAS7262, CALIBRATED_VALUES
+
+from .tools import CALIBRATED_VALUES, SMBusFakeAS7262
 
 
 def _setup():

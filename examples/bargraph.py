@@ -1,6 +1,7 @@
-import time
 import os
 import sys
+import time
+
 from as7262 import AS7262
 
 as7262 = AS7262()

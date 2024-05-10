@@ -1,8 +1,8 @@
 """Library for the AS7262 Visble Light Spectral Sensor."""
-import time
 import struct
+import time
 
-from i2cdevice import Device, Register, BitField, _int_to_bytes
+from i2cdevice import BitField, Device, Register, _int_to_bytes
 from i2cdevice.adapter import Adapter, LookupAdapter
 
 __version__ = '0.1.0'
