@@ -1,3 +1,9 @@
+1.0.0
+-----
+
+* Repackage to hatch/pyproject.toml
+* Migrate to smbus2
+
 0.1.0
 -----
 
