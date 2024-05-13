@@ -25,8 +25,8 @@ class as7262VirtualRegisterBus():
 
         """
         if i2c_dev is None:
-            import smbus
-            self._i2c_bus = smbus.SMBus(1)
+            import smbus2
+            self._i2c_bus = smbus2.SMBus(1)
         else:
             self._i2c_bus = i2c_dev
 

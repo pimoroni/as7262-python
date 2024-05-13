@@ -10,7 +10,7 @@ def _setup():
     global as7262
     smbus = mock.Mock()
     smbus.SMBus = SMBusFakeAS7262
-    sys.modules['smbus'] = smbus
+    sys.modules['smbus2'] = smbus
     from as7262 import AS7262
     as7262 = AS7262()
 
