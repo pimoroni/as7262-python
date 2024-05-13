@@ -1,4 +1,4 @@
-"""Library for the AS7262 Visble Light Spectral Sensor."""
+"""Library for the AS7262 Viisble Light Spectral Sensor."""
 import as7262
 
 if __name__ == '__main__':

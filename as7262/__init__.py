@@ -1,18 +1,18 @@
-"""Library for the AS7262 Visble Light Spectral Sensor."""
-import time
+"""Library for the AS7262 Visible Light Spectral Sensor."""
 import struct
+import time
 
-from i2cdevice import Device, Register, BitField, _int_to_bytes
+from i2cdevice import BitField, Device, Register, _int_to_bytes
 from i2cdevice.adapter import Adapter, LookupAdapter
 
-__version__ = '0.1.0'
+__version__ = '1.0.0'
 
 
 class as7262VirtualRegisterBus():
     """AS7262 Virtual Register.
 
     This class implements the wacky virtual register setup
-    of the AS7262 annd allows i2cdevice.Device to "just work"
+    of the AS7262 and allows i2cdevice.Device to "just work"
     without having to worry about how registers are actually
     read or written under the hood.
 
@@ -25,8 +25,8 @@ class as7262VirtualRegisterBus():
 
         """
         if i2c_dev is None:
-            import smbus
-            self._i2c_bus = smbus.SMBus(1)
+            import smbus2
+            self._i2c_bus = smbus2.SMBus(1)
         else:
             self._i2c_bus = i2c_dev
 

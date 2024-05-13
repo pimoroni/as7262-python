@@ -1,5 +1,6 @@
 """Test tools for the AS7262 sensor."""
 import struct
+
 from i2cdevice import MockSMBus
 
 CALIBRATED_VALUES = [1.1, 2.2, 3.3, 4.4, 5.5, 6.6]
@@ -48,7 +49,7 @@ class SMBusFakeAS7262(MockSMBus):
         self.status = 0b01    # Fake status register
         self.ptr = None       # Fake register pointer
 
-        # Virtual registers, thes contain the data actually used
+        # Virtual registers, these contain the data actually used
         self.regs[0x00] = 0x88  # Fake HW type
         self.regs[0x01] = 0x77  # Fake HW version
         self.regs[0x02] = 0xFE  # Fake FW version MSB (Sub, Minor)
@@ -56,7 +57,7 @@ class SMBusFakeAS7262(MockSMBus):
         self.regs[0x04] = 0x02  # Control Register
 
         # Prime the Calibrated Data registers with fake data
-        self.regs[0x14:24] = [ord(c) if type(c) is str else c for c in struct.pack(
+        self.regs[0x14:24] = [ord(c) if isinstance(c, str) else c for c in struct.pack(
             '>ffffff',
             *reversed(CALIBRATED_VALUES)
         )]

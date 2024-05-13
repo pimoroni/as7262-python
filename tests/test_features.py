@@ -1,21 +1,10 @@
 # noqa D100
-import sys
-import mock
-from .tools import SMBusFakeAS7262, CALIBRATED_VALUES
+from .tools import CALIBRATED_VALUES
 
 
-def _setup():
-    global as7262
-    smbus = mock.Mock()
-    smbus.SMBus = SMBusFakeAS7262
-    sys.modules['smbus'] = smbus
-    from as7262 import AS7262
-    as7262 = AS7262()
-
-
-def test_set_integration_time():
+def test_set_integration_time(smbus, AS7262):
     """Test the set_integration_time method against various values."""
-    _setup()
+    as7262 = AS7262()
 
     # Integration time is stored as 2.8ms per lsb
     # so returned values experience quantization
@@ -37,9 +26,9 @@ def test_set_integration_time():
     assert as7262._as7262.INTEGRATION_TIME.get_ms() == (int(99999 * 2.8) & 0xFF) / 2.8
 
 
-def test_set_gain():
+def test_set_gain(smbus, AS7262):
     """Test the set_gain method against various values."""
-    _setup()
+    as7262 = AS7262()
 
     as7262.set_gain(1)
     assert as7262._as7262.CONTROL.get_gain_x() == 1
@@ -53,17 +42,17 @@ def test_set_gain():
     assert as7262._as7262.CONTROL.get_gain_x() == 1
 
 
-def test_set_measurement_mode():
+def test_set_measurement_mode(smbus, AS7262):
     """Test the set_measurement_mode method."""
-    _setup()
+    as7262 = AS7262()
 
     as7262.set_measurement_mode(2)
     assert as7262._as7262.CONTROL.get_measurement_mode() == 2
 
 
-def test_set_illumination_led_current():
+def test_set_illumination_led_current(smbus, AS7262):
     """Test the set_illumination_led_current method."""
-    _setup()
+    as7262 = AS7262()
 
     as7262.set_illumination_led_current(12.5)
     assert as7262._as7262.LED_CONTROL.get_illumination_current_limit_ma() == 12.5
@@ -75,9 +64,9 @@ def test_set_illumination_led_current():
     assert as7262._as7262.LED_CONTROL.get_illumination_current_limit_ma() == 100
 
 
-def test_set_indicator_led_current():
+def test_set_indicator_led_current(smbus, AS7262):
     """Test the set_indicator_led_current method."""
-    _setup()
+    as7262 = AS7262()
 
     as7262.set_indicator_led_current(4)
     assert as7262._as7262.LED_CONTROL.get_indicator_current_limit_ma() == 4
@@ -89,33 +78,33 @@ def test_set_indicator_led_current():
     assert as7262._as7262.LED_CONTROL.get_indicator_current_limit_ma() == 1
 
 
-def test_indicator_led():
+def test_indicator_led(smbus, AS7262):
     """Test the indicator_led method."""
-    _setup()
+    as7262 = AS7262()
 
     as7262.set_indicator_led(1)
     assert as7262._as7262.LED_CONTROL.get_indicator_enable() == 1
 
 
-def test_illumination_led():
+def test_illumination_led(smbus, AS7262):
     """Test the illumination_led method."""
-    _setup()
+    as7262 = AS7262()
 
     as7262.set_illumination_led(1)
     assert as7262._as7262.LED_CONTROL.get_illumination_enable() == 1
 
 
-def test_soft_reset():
+def test_soft_reset(smbus, AS7262):
     """Test the soft_reset method."""
-    _setup()
+    as7262 = AS7262()
 
     as7262.soft_reset()
     assert as7262._as7262.CONTROL.get_reset() == 1
 
 
-def test_get_calibrated_values():
+def test_get_calibrated_values(smbus, AS7262):
     """Test against fake calibrated values stored in hardware mock."""
-    _setup()
+    as7262 = AS7262()
 
     values = as7262.get_calibrated_values()
 
