@@ -69,4 +69,3 @@ try:
 except KeyboardInterrupt:
     as7262.set_measurement_mode(3)
     as7262.set_illumination_led(0)
-
