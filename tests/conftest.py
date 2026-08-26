@@ -1,7 +1,7 @@
 
 import sys
+from unittest import mock
 
-import mock
 import pytest
 
 from .tools import SMBusFakeAS7262

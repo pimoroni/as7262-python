@@ -8,7 +8,7 @@ from i2cdevice.adapter import Adapter, LookupAdapter
 __version__ = '1.0.0'
 
 
-class as7262VirtualRegisterBus():
+class as7262VirtualRegisterBus:
     """AS7262 Virtual Register.
 
     This class implements the wacky virtual register setup
@@ -68,7 +68,7 @@ class FWVersionAdapter(Adapter):
         major_version = (value & 0x00F0) >> 4
         minor_version = ((value & 0x000F) << 2) | ((value & 0b1100000000000000) >> 14)
         sub_version = (value & 0b0011111100000000) >> 8
-        return '{}.{}.{}'.format(major_version, minor_version, sub_version)
+        return f'{major_version}.{minor_version}.{sub_version}'
 
 
 class FloatAdapter(Adapter):
@@ -92,7 +92,7 @@ class IntegrationTimeAdapter(Adapter):
 class CalibratedValues:
     """Store the 6 band spectral values."""
 
-    def __init__(self, red, orange, yellow, green, blue, violet):  # noqa D107
+    def __init__(self, red, orange, yellow, green, blue, violet):
         self.red = red
         self.orange = orange
         self.yellow = yellow
@@ -100,7 +100,7 @@ class CalibratedValues:
         self.blue = blue
         self.violet = violet
 
-    def __iter__(self):  # noqa D107
+    def __iter__(self):
         for colour in ['red', 'orange', 'yellow', 'green', 'blue', 'violet']:
             yield getattr(self, colour)
 
@@ -165,11 +165,7 @@ class AS7262:
                 if isinstance(field.adapter, LookupAdapter):
                     for key in field.adapter.lookup_table:
                         value = field.adapter.lookup_table[key]
-                        name = 'AS7262_{register}_{field}_{key}'.format(
-                            register=register.name,
-                            field=field.name,
-                            key=key
-                        ).upper()
+                        name = f'AS7262_{register.name}_{field.name}_{key}'.upper()
                         locals()[name] = key
 
         self.soft_reset()
