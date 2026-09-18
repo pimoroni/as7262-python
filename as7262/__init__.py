@@ -1,11 +1,15 @@
 """Library for the AS7262 Visible Light Spectral Sensor."""
 import struct
 import time
+from importlib.metadata import PackageNotFoundError, version
 
 from i2cdevice import BitField, Device, Register, _int_to_bytes
 from i2cdevice.adapter import Adapter, LookupAdapter
 
-__version__ = '1.0.0'
+try:
+    __version__ = version("as7262")
+except PackageNotFoundError:
+    __version__ = "0.0.0"
 
 
 class as7262VirtualRegisterBus:
