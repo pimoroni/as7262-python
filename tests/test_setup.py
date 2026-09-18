@@ -1,4 +1,4 @@
-# noqa D100
+
 
 
 def test_fw_info(smbus, AS7262):

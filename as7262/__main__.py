@@ -6,7 +6,7 @@ if __name__ == '__main__':
 
     hw_type, hw_version, fw_version = as7262.get_version()
 
-    print('{}'.format(fw_version))
+    print(f'{fw_version}')
 
     as7262.set_gain(64)
 
